@@ -241,10 +241,12 @@ function updateQuestionNavigation() {
         if (index === currentQuestion) {
             item.classList.add('active');
             // Scroll into view
-           item.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
-    }):
+    });
 }
+
+
 
 function navigateToQuestion(index) {
     // Allow navigation to any question without validation
@@ -490,6 +492,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
