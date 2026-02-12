@@ -22,7 +22,7 @@ const drivers = [
     { number: 14, name: 'FERNANDO ALONSO', team: 'Aston Martin' },
     { number: 18, name: 'LANCE STROLL', team: 'Aston Martin' },
     // Racing Bulls
-    { number: 41, name: 'ISACK HADJAR', team: 'Racing Bulls' },
+    { number: 41, name: 'ARVID LINDBLAD', team: 'Racing Bulls' },
     { number: 30, name: 'LIAM LAWSON', team: 'Racing Bulls' },
     // Sauber
     { number: 27, name: 'NICO HULKENBERG', team: 'Sauber' },
@@ -38,7 +38,7 @@ const drivers = [
 // Driver image mapping
 const driverImages = {
     'MAX VERSTAPPEN': 'max.png',
-    'YUKI TSUNODA': 'yuki.png',
+    'ARVID LINDBLAD': 'lindblad.png',
     'LEWIS HAMILTON': 'hamilton.png',
     'CHARLES LECLERC': 'charles.png',
     'LANDO NORRIS': 'lundo.png',
@@ -492,6 +492,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
