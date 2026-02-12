@@ -25,14 +25,17 @@ const drivers = [
     { number: 41, name: 'ARVID LINDBLAD', team: 'Racing Bulls' },
     { number: 30, name: 'LIAM LAWSON', team: 'Racing Bulls' },
     // Sauber
-    { number: 27, name: 'NICO HULKENBERG', team: 'Sauber' },
-    { number: 5, name: 'GABRIEL BORTOLETO', team: 'Sauber' },
+    { number: 27, name: 'NICO HULKENBERG', team: 'Audi Racing' },
+    { number: 5, name: 'GABRIEL BORTOLETO', team: 'Audi Racing' },
     // Haas
     { number: 87, name: 'OLIVER BEARMAN', team: 'Haas' },
     { number: 31, name: 'ESTEBAN OCON', team: 'Haas' },
     // Alpine
     { number: 10, name: 'PIERRE GASLY', team: 'Alpine' },
-    { number: 43, name: 'FRANCO COLAPINTO', team: 'Alpine' }
+    { number: 43, name: 'FRANCO COLAPINTO', team: 'Alpine' },
+    // Cadillac
+    { number: 11, name: 'SERGIO PEREZ', team: 'Cadillac Racing'},
+    { number: 77, name: 'VALTERRI BOTTAS', team: 'Cadillac Racing'}
 ];
 
 // Driver image mapping
@@ -56,13 +59,15 @@ const driverImages = {
     'CARLOS SAINZ': 'carlos.png',
     'ALEX ALBON': 'albon.png',
     'ISACK HADJAR': 'hadjar.png',
-    'LIAM LAWSON': 'lawson.png'
+    'LIAM LAWSON': 'lawson.png',
+    'SERGIO PEREZ': 'perez.jpg',
+    'VALTERRI BOTTAS': 'bottas.png'
 };
 
 // Questions structure
 const questions = [
     // Position predictions (P1 to P20)
-    ...Array.from({ length: 20 }, (_, i) => ({
+    ...Array.from({ length: 22 }, (_, i) => ({
         id: `p${i + 1}`,
         title: `LAS VEGAS GP - YOUR P${i + 1}`,
         type: 'driver',
@@ -492,6 +497,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
