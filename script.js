@@ -66,19 +66,20 @@ const driverImages = {
 
 // Questions structure
 const questions = [
-    // Position predictions (P1 to P20)
-    ...Array.from({ length: 22 }, (_, i) => ({
-        id: `p${i + 1}`,
-        title: `LAS VEGAS GP - YOUR P${i + 1}`,
-        type: 'driver',
-        questionNumber: `QUESTION ${i + 1} / 24`
-    })),
+   // Position predictions (Selected positions only)
+...[
+    1, 2, 3, 4, 5,
+    15, 16, 17, 18, 19, 20
+].map(position => ({
+    id: `p${position}`,
+    title: `LAS VEGAS GP - YOUR P${position}`,
+    type: 'driver'
+})),
     // Special predictions
-    { id: 'pole_driver', title: 'LAS VEGAS - POLE POSITION DRIVER', type: 'driver', questionNumber: 'QUESTION 21 / 24' },
-    { id: 'pole_time', title: 'LAS VEGAS - POLE LAP TIME', type: 'time', questionNumber: 'QUESTION 22 / 24', placeholder: '12.246' },
-    { id: 'fastest_lap_driver', title: 'LAS VEGAS - FASTEST LAP DRIVER', type: 'driver', questionNumber: 'QUESTION 23 / 24' },
-    { id: 'fastest_lap_time', title: 'LAS VEGAS - FASTEST LAP TIME', type: 'time', questionNumber: 'QUESTION 24 / 24', placeholder: '12.246' },
-    { id: 'most_positions', title: 'LAS VEGAS - MOST POSITIONS GAINED', type: 'driver', questionNumber: 'QUESTION 25 / 24' }
+    { id: 'Flop', title: 'F1 2026 Season - Flop Driver', type: 'driver', questionNumber: 'QUESTION 21 / 24' },
+    { id: 'good', title: 'F1 2026 Season - Better then expected', type: 'driver', questionNumber: 'QUESTION 22 / 24',},
+    { id: 'dnf', title: 'F1 2026 Season - Driver Crashing the most', type: 'driver', questionNumber: 'QUESTION 23 / 24' },
+    { id: 'fucked', title: 'F1 2026 Season - Driver getting swapped mid season', type: 'driver', questionNumber: 'QUESTION 25 / 24' }
 ];
 
 // Update questions count
@@ -497,6 +498,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
