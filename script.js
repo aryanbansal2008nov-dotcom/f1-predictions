@@ -4,10 +4,10 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywsnHlIMBHcg
 // F1 2025 Drivers Data
 const drivers = [
     // Red Bull Racing
-    { number: 3, name: 'MAX VERSTAPPEN', team: 'Red Bull Racing' },
-    { number: 6, name: 'ISACK HADJAR', team: 'Red Bull Racing' },
+    { number: 1, name: 'MAX VERSTAPPEN', team: 'Red Bull Racing' },
+    { number: 22, name: 'YUKI TSUNODA', team: 'Red Bull Racing' },
     // McLaren
-    { number: 1, name: 'LANDO NORRIS', team: 'McLaren' },
+    { number: 4, name: 'LANDO NORRIS', team: 'McLaren' },
     { number: 81, name: 'OSCAR PIASTRI', team: 'McLaren' },
     // Ferrari
     { number: 44, name: 'LEWIS HAMILTON', team: 'Ferrari' },
@@ -22,26 +22,23 @@ const drivers = [
     { number: 14, name: 'FERNANDO ALONSO', team: 'Aston Martin' },
     { number: 18, name: 'LANCE STROLL', team: 'Aston Martin' },
     // Racing Bulls
-    { number: 41, name: 'ARVID LINDBLAD', team: 'Racing Bulls' },
-    { number: 30, name: 'LIAM LAWSON', team: 'Racing Bulls' },
+    { number: 21, name: 'ISACK HADJAR', team: 'Racing Bulls' },
+    { number: 40, name: 'LIAM LAWSON', team: 'Racing Bulls' },
     // Sauber
-    { number: 27, name: 'NICO HULKENBERG', team: 'Audi Racing' },
-    { number: 5, name: 'GABRIEL BORTOLETO', team: 'Audi Racing' },
+    { number: 27, name: 'NICO HULKENBERG', team: 'Sauber' },
+    { number: 5, name: 'GABRIEL BORTOLETO', team: 'Sauber' },
     // Haas
     { number: 87, name: 'OLIVER BEARMAN', team: 'Haas' },
     { number: 31, name: 'ESTEBAN OCON', team: 'Haas' },
     // Alpine
     { number: 10, name: 'PIERRE GASLY', team: 'Alpine' },
     { number: 43, name: 'FRANCO COLAPINTO', team: 'Alpine' }
-    // Cadillac
-    { number: 11, name: 'SERGIO PEREZ', team: 'Cadillac' },
-    { number: 77, name: 'VALTTERI BOTTAS', team: 'Cadillac' }
 ];
 
 // Driver image mapping
 const driverImages = {
     'MAX VERSTAPPEN': 'max.png',
-    'ARVID LINDBLAD': 'lindblad.png',
+    'YUKI TSUNODA': 'yuki.png',
     'LEWIS HAMILTON': 'hamilton.png',
     'CHARLES LECLERC': 'charles.png',
     'LANDO NORRIS': 'lundo.png',
@@ -59,25 +56,22 @@ const driverImages = {
     'CARLOS SAINZ': 'carlos.png',
     'ALEX ALBON': 'albon.png',
     'ISACK HADJAR': 'hadjar.png',
-    'LIAM LAWSON': 'lawson.png',
-    'SERGIO PEREZ': 'perez.jpg',
-    'VALTTERI BOTTAS': 'bottas.png'
+    'LIAM LAWSON': 'lawson.png'
 };
 
 // Questions structure
 const questions = [
-    // Position predictions (P1 to P22)
-    ...Array.from({ length: 22 }, (_, i) => ({
+    // Position predictions (P1 to P20)
+    ...Array.from({ length: 20 }, (_, i) => ({
         id: `p${i + 1}`,
-        title: `2026 F1 Season - YOUR P${i + 1}`,
+        title: `LAS VEGAS GP - YOUR P${i + 1}`,
         type: 'driver',
         questionNumber: `QUESTION ${i + 1} / 24`
-        
     })),
     // Special predictions
-    { id: 'pole_driver', title: '2026 F1 Season - Flop of the Season (like hamilton in 2025)', type: 'driver', questionNumber: 'QUESTION 23 / 24' },
-    { id: 'pole_time', title: '2026 F1 Season - Unexpectedly Good Driver', type: 'time', questionNumber: 'QUESTION 24 / 24', placeholder: '12.246' },
-    { id: 'fastest_lap_driver', title: '2026 F1 Season - ', type: 'driver', questionNumber: 'QUESTION 23 / 24' },
+    { id: 'pole_driver', title: 'LAS VEGAS - POLE POSITION DRIVER', type: 'driver', questionNumber: 'QUESTION 21 / 24' },
+    { id: 'pole_time', title: 'LAS VEGAS - POLE LAP TIME', type: 'time', questionNumber: 'QUESTION 22 / 24', placeholder: '12.246' },
+    { id: 'fastest_lap_driver', title: 'LAS VEGAS - FASTEST LAP DRIVER', type: 'driver', questionNumber: 'QUESTION 23 / 24' },
     { id: 'fastest_lap_time', title: 'LAS VEGAS - FASTEST LAP TIME', type: 'time', questionNumber: 'QUESTION 24 / 24', placeholder: '12.246' },
     { id: 'most_positions', title: 'LAS VEGAS - MOST POSITIONS GAINED', type: 'driver', questionNumber: 'QUESTION 25 / 24' }
 ];
@@ -498,7 +492,6 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
-
 
 
 
