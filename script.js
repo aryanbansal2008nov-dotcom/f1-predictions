@@ -4,10 +4,10 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywsnHlIMBHcg
 // F1 2025 Drivers Data
 const drivers = [
     // Red Bull Racing
-    { number: 1, name: 'MAX VERSTAPPEN', team: 'Red Bull Racing' },
+    { number: 3, name: 'MAX VERSTAPPEN', team: 'Red Bull Racing' },
     { number: 22, name: 'YUKI TSUNODA', team: 'Red Bull Racing' },
     // McLaren
-    { number: 4, name: 'LANDO NORRIS', team: 'McLaren' },
+    { number: 1, name: 'LANDO NORRIS', team: 'McLaren' },
     { number: 81, name: 'OSCAR PIASTRI', team: 'McLaren' },
     // Ferrari
     { number: 44, name: 'LEWIS HAMILTON', team: 'Ferrari' },
@@ -23,7 +23,7 @@ const drivers = [
     { number: 18, name: 'LANCE STROLL', team: 'Aston Martin' },
     // Racing Bulls
     { number: 21, name: 'ISACK HADJAR', team: 'Racing Bulls' },
-    { number: 40, name: 'LIAM LAWSON', team: 'Racing Bulls' },
+    { number: 30, name: 'LIAM LAWSON', team: 'Racing Bulls' },
     // Sauber
     { number: 27, name: 'NICO HULKENBERG', team: 'Sauber' },
     { number: 5, name: 'GABRIEL BORTOLETO', team: 'Sauber' },
@@ -492,6 +492,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
