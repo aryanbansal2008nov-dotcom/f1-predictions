@@ -5,7 +5,7 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywsnHlIMBHcg
 const drivers = [
     // Red Bull Racing
     { number: 3, name: 'MAX VERSTAPPEN', team: 'Red Bull Racing' },
-    { number: 22, name: 'YUKI TSUNODA', team: 'Red Bull Racing' },
+    { number: 21, name: 'ISACK HADJAR', team: 'Red Bull Racing' },
     // McLaren
     { number: 1, name: 'LANDO NORRIS', team: 'McLaren' },
     { number: 81, name: 'OSCAR PIASTRI', team: 'McLaren' },
@@ -22,7 +22,7 @@ const drivers = [
     { number: 14, name: 'FERNANDO ALONSO', team: 'Aston Martin' },
     { number: 18, name: 'LANCE STROLL', team: 'Aston Martin' },
     // Racing Bulls
-    { number: 21, name: 'ISACK HADJAR', team: 'Racing Bulls' },
+    { number: 41, name: 'ISACK HADJAR', team: 'Racing Bulls' },
     { number: 30, name: 'LIAM LAWSON', team: 'Racing Bulls' },
     // Sauber
     { number: 27, name: 'NICO HULKENBERG', team: 'Sauber' },
@@ -492,6 +492,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
