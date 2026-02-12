@@ -79,7 +79,10 @@ const questions = [
     { id: 'Flop', title: 'F1 2026 Season - Flop Driver', type: 'driver', questionNumber: 'QUESTION 21 / 24' },
     { id: 'good', title: 'F1 2026 Season - Better then expected', type: 'driver', questionNumber: 'QUESTION 22 / 24',},
     { id: 'dnf', title: 'F1 2026 Season - Driver Crashing the most', type: 'driver', questionNumber: 'QUESTION 23 / 24' },
-    { id: 'fucked', title: 'F1 2026 Season - Driver getting booted mid season', type: 'driver', questionNumber: 'QUESTION 25 / 24' }
+    { id: 'fucked', title: 'F1 2026 Season - Driver getting booted mid season', type: 'driver', questionNumber: 'QUESTION 25 / 24' },
+    { id: 'WCC', title: 'F1 2026 Season - Constructors Champion', type: 'text', placeholder: 'Which team will win WCC?'},
+    { id: 'bold_prediction', title: 'F1 2026 Season - Crazy Prediction', type: 'text', placeholder: 'Write your bold prediction...'}
+
 ];
 
 // Update questions count
@@ -219,6 +222,10 @@ function renderQuestionNavigation() {
             label = 'Good';
         } else if (question.id === 'most_positions') {
             label = 'MOST';
+        } else if (question.id === 'WCC') {
+            label = 'WCC';
+        } else if (question.id === 'bold_prediction') {
+            label = 'Crazy';
         }
         
         navItem.textContent = label;
@@ -276,14 +283,45 @@ function showQuestion(index) {
     // Show appropriate input type
     const driversGrid = document.getElementById('driversGrid');
     const timeInputContainer = document.getElementById('timeInputContainer');
+
+    const textInputContainer = document.getElementById('textInputContainer');
+const textInput = document.getElementById('textInput');
+
     
-    if (question.type === 'driver') {
-        driversGrid.style.display = 'grid';
-        timeInputContainer.style.display = 'none';
-        renderDrivers(question.id);
+    driversGrid.style.display = 'none';
+timeInputContainer.style.display = 'none';
+textInputContainer.style.display = 'none';
+
+if (question.type === 'driver') {
+    driversGrid.style.display = 'grid';
+    renderDrivers(question.id);
+}
+else if (question.type === 'time') {
+    timeInputContainer.style.display = 'block';
+
+    const timeInputSeconds = document.getElementById('timeInputSeconds');
+    const timeInputMilliseconds = document.getElementById('timeInputMilliseconds');
+
+    const existingValue = predictions[question.id];
+
+    if (existingValue && existingValue.startsWith('1:')) {
+        const parts = existingValue.split(':');
+        if (parts.length === 2) {
+            const timeParts = parts[1].split('.');
+            timeInputSeconds.value = timeParts[0] || '';
+            timeInputMilliseconds.value = timeParts[1] || '';
+        }
     } else {
-        driversGrid.style.display = 'none';
-        timeInputContainer.style.display = 'block';
+        timeInputSeconds.value = '';
+        timeInputMilliseconds.value = '';
+    }
+}
+else if (question.type === 'text') {
+    textInputContainer.style.display = 'block';
+    textInput.placeholder = question.placeholder || 'Enter your answer...';
+    textInput.value = predictions[question.id] || '';
+}
+
         const timeInputSeconds = document.getElementById('timeInputSeconds');
         const timeInputMilliseconds = document.getElementById('timeInputMilliseconds');
         
@@ -384,28 +422,42 @@ function allQuestionsAnswered() {
 function nextQuestion() {
     const question = questions[currentQuestion];
     
-    // Validate current question
-    if (question.type === 'driver') {
-        if (!predictions[question.id]) {
-            alert('Please select a driver');
-            return;
-        }
-    } else {
-        const timeInputSeconds = document.getElementById('timeInputSeconds').value.trim();
-        const timeInputMilliseconds = document.getElementById('timeInputMilliseconds').value.trim();
-        
-        if (!timeInputSeconds || !timeInputMilliseconds) {
-            alert('Please enter both seconds and milliseconds');
-            return;
-        }
-        if (!validateTime(timeInputSeconds + '.' + timeInputMilliseconds)) {
-            alert('Please enter valid time (seconds: 00-59, milliseconds: 000-999)');
-            return;
-        }
-        predictions[question.id] = '1:' + timeInputSeconds + '.' + timeInputMilliseconds;
-        updateQuestionNavigation();
+   // Validate current question
+if (question.type === 'driver') {
+    if (!predictions[question.id]) {
+        alert('Please select a driver');
+        return;
     }
-    
+}
+else if (question.type === 'time') {
+
+    const timeInputSeconds = document.getElementById('timeInputSeconds').value.trim();
+    const timeInputMilliseconds = document.getElementById('timeInputMilliseconds').value.trim();
+
+    if (!timeInputSeconds || !timeInputMilliseconds) {
+        alert('Please enter both seconds and milliseconds');
+        return;
+    }
+
+    if (!validateTime(timeInputSeconds + '.' + timeInputMilliseconds)) {
+        alert('Please enter valid time');
+        return;
+    }
+
+    predictions[question.id] = '1:' + timeInputSeconds + '.' + timeInputMilliseconds;
+}
+else if (question.type === 'text') {
+
+    const textValue = document.getElementById('textInput').value.trim();
+
+    if (!textValue) {
+        alert('Please enter a response');
+        return;
+    }
+
+    predictions[question.id] = textValue;
+}
+
     // Move to next question or submit
     if (currentQuestion < questions.length - 1) {
         showQuestion(currentQuestion + 1);
@@ -498,6 +550,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
