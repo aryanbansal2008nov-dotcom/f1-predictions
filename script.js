@@ -79,7 +79,7 @@ const questions = [
     { id: 'Flop', title: 'F1 2026 Season - Flop Driver', type: 'driver', questionNumber: 'QUESTION 21 / 24' },
     { id: 'good', title: 'F1 2026 Season - Better then expected', type: 'driver', questionNumber: 'QUESTION 22 / 24',},
     { id: 'dnf', title: 'F1 2026 Season - Driver Crashing the most', type: 'driver', questionNumber: 'QUESTION 23 / 24' },
-    { id: 'fucked', title: 'F1 2026 Season - Driver getting swapped mid season', type: 'driver', questionNumber: 'QUESTION 25 / 24' }
+    { id: 'fucked', title: 'F1 2026 Season - Driver getting booted mid season', type: 'driver', questionNumber: 'QUESTION 25 / 24' }
 ];
 
 // Update questions count
@@ -498,6 +498,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
