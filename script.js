@@ -72,7 +72,7 @@ const questions = [
     15, 16, 17, 18, 19, 20
 ].map(position => ({
     id: `p${position}`,
-    title: `LAS VEGAS GP - YOUR P${position}`,
+    title: `F1 2026 Season - YOUR P${position}`,
     type: 'driver'
 })),
     // Special predictions
@@ -498,6 +498,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
