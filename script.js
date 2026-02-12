@@ -1,9 +1,6 @@
-// Configuration
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywsnHlIMBHcgSkYGTWGzG5GPfj1k7WA-00wLY9P0_GnV9IxdVKn3giEcb9cJHRDakF/exec';
 
-// =======================
-// DRIVERS
-// =======================
+// ================= DRIVERS =================
 
 const drivers = [
     { number: 3, name: 'MAX VERSTAPPEN', team: 'Red Bull Racing' },
@@ -55,224 +52,150 @@ const driverImages = {
     'VALTERRI BOTTAS': 'bottas.png'
 };
 
-// =======================
-// QUESTIONS
-// =======================
+// ================= QUESTIONS =================
 
 const questions = [
-    ...[1,2,3,4,5,16,17,18,19,20].map(position => ({
-        id: `p${position}`,
-        title: `F1 2026 Season - YOUR P${position}`,
+    ...[1,2,3,4,5,16,17,18,19,20].map(p => ({
+        id: `p${p}`,
+        title: `F1 2026 Season - YOUR P${p}`,
         type: 'driver'
     })),
-    { id: 'Flop', title: 'F1 2026 Season - Flop Driver', type: 'driver' },
-    { id: 'good', title: 'F1 2026 Season - Better than expected', type: 'driver' },
-    { id: 'dnf', title: 'F1 2026 Season - Driver crashing the most', type: 'driver' },
-    { id: 'fucked', title: 'F1 2026 Season - Driver getting booted mid season', type: 'driver' },
-    { id: 'WCC', title: 'F1 2026 Season - Constructors Champion', type: 'text', placeholder: 'Which team will win WCC?' },
-    { id: 'bold_prediction', title: 'F1 2026 Season - Crazy Prediction', type: 'text', placeholder: 'Write your bold prediction...' }
+    { id: 'Flop', title: 'Flop Driver', type: 'driver' },
+    { id: 'good', title: 'Better Than Expected', type: 'driver' },
+    { id: 'dnf', title: 'Most Crashes', type: 'driver' },
+    { id: 'fucked', title: 'Booted Mid Season', type: 'driver' },
+    { id: 'WCC', title: 'Constructors Champion', type: 'text', placeholder: 'Which team wins WCC?' },
+    { id: 'bold_prediction', title: 'Crazy Prediction', type: 'text', placeholder: 'Write something wild...' }
 ];
 
-questions.forEach((q, index) => {
-    q.questionNumber = `QUESTION ${index + 1} / ${questions.length}`;
+questions.forEach((q,i)=>{
+    q.questionNumber = `Question ${i+1} / ${questions.length}`;
 });
 
-// =======================
-// STATE
-// =======================
+// ================= STATE =================
 
 let currentQuestion = 0;
-let predictions = {
-    participantName: '',
-    timestamp: ''
-};
+let predictions = {};
 let selectedDrivers = new Set();
 
-// =======================
-// START
-// =======================
+// ================= START =================
 
 function startPrediction() {
     const name = document.getElementById('participantName').value.trim();
-    if (!name) {
-        alert('Please enter your name');
-        return;
-    }
+    if (!name) return alert("Enter name");
 
     predictions.participantName = name;
     predictions.timestamp = new Date().toISOString();
+
     document.getElementById('displayName').textContent = name;
 
     showScreen('predictionScreen');
-    renderQuestionNavigation();
     showQuestion(0);
 }
 
-// =======================
-// SCREEN SWITCH
-// =======================
+// ================= SCREEN SWITCH =================
 
-function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-    });
-    document.getElementById(screenId).classList.add('active');
+function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
 }
 
-// =======================
-// NAVIGATION BAR
-// =======================
+// ================= SHOW QUESTION =================
 
-function renderQuestionNavigation() {
-    const questionNav = document.getElementById('questionNav');
-    questionNav.innerHTML = '';
-
-    questions.forEach((question, index) => {
-        const navItem = document.createElement('div');
-        navItem.className = 'question-nav-item';
-        navItem.textContent = question.id;
-        navItem.onclick = () => showQuestion(index);
-        questionNav.appendChild(navItem);
-    });
-
-    updateQuestionNavigation();
-}
-
-function updateQuestionNavigation() {
-    const navItems = document.querySelectorAll('.question-nav-item');
-
-    navItems.forEach((item, index) => {
-        item.classList.remove('active', 'completed');
-
-        if (predictions[questions[index].id]) {
-            item.classList.add('completed');
-        }
-
-        if (index === currentQuestion) {
-            item.classList.add('active');
-        }
-    });
-}
-
-// =======================
-// SHOW QUESTION (FIXED)
-// =======================
-
-function showQuestion(index) {
+function showQuestion(index){
     currentQuestion = index;
-    const question = questions[index];
+    const q = questions[index];
 
-    updateQuestionNavigation();
-
-    document.getElementById('questionNumber').textContent = question.questionNumber;
-    document.getElementById('questionTitle').textContent = question.title;
+    document.getElementById('questionNumber').textContent = q.questionNumber;
+    document.getElementById('questionTitle').textContent = q.title;
 
     const driversGrid = document.getElementById('driversGrid');
-    const timeInputContainer = document.getElementById('timeInputContainer');
     const textInputContainer = document.getElementById('textInputContainer');
     const textInput = document.getElementById('textInput');
 
     driversGrid.style.display = 'none';
-    timeInputContainer.style.display = 'none';
     textInputContainer.style.display = 'none';
 
-    if (question.type === 'driver') {
+    if(q.type === 'driver'){
         driversGrid.style.display = 'grid';
-        renderDrivers(question.id);
-    }
-    else if (question.type === 'text') {
-        textInputContainer.style.display = 'block';
-        textInput.placeholder = question.placeholder || 'Enter your answer...';
-        textInput.value = predictions[question.id] || '';
+        renderDrivers(q.id);
     }
 
-    document.getElementById('prevBtn').style.display = index > 0 ? 'block' : 'none';
-    document.getElementById('nextBtnText').textContent =
-        index < questions.length - 1 ? 'NEXT →' : 'SUBMIT';
+    if(q.type === 'text'){
+        textInputContainer.style.display = 'block';
+        textInput.placeholder = q.placeholder || '';
+        textInput.value = predictions[q.id] || '';
+    }
+
+    document.getElementById('prevBtn').style.display = index > 0 ? 'inline-block' : 'none';
+    document.getElementById('nextBtn').textContent =
+        index < questions.length-1 ? 'Next' : 'Submit';
 }
 
-// =======================
-// DRIVER GRID
-// =======================
+// ================= RENDER DRIVERS =================
 
-function renderDrivers(questionId) {
-    const driversGrid = document.getElementById('driversGrid');
-    driversGrid.innerHTML = '';
+function renderDrivers(questionId){
+    const grid = document.getElementById('driversGrid');
+    grid.innerHTML = '';
 
-    drivers.forEach(driver => {
+    drivers.forEach(driver=>{
         const card = document.createElement('div');
         card.className = 'driver-card';
 
-        if (predictions[questionId] === driver.name) {
+        if(predictions[questionId] === driver.name){
             card.classList.add('selected');
         }
 
         card.innerHTML = `
             <div>${driver.number}</div>
+            <img src="driver pics/${driverImages[driver.name]}" style="width:60px;">
             <div>${driver.name}</div>
             <div>${driver.team}</div>
         `;
 
-        card.onclick = () => {
+        card.onclick = ()=>{
             predictions[questionId] = driver.name;
-            updateQuestionNavigation();
             renderDrivers(questionId);
         };
 
-        driversGrid.appendChild(card);
+        grid.appendChild(card);
     });
 }
 
-// =======================
-// NEXT / PREVIOUS
-// =======================
+// ================= NAVIGATION =================
 
-function nextQuestion() {
-    const question = questions[currentQuestion];
+function nextQuestion(){
+    const q = questions[currentQuestion];
 
-    if (!predictions[question.id]) {
-        if (question.type === 'text') {
-            const value = document.getElementById('textInput').value.trim();
-            if (!value) {
-                alert('Please enter a response');
-                return;
-            }
-            predictions[question.id] = value;
-        } else {
-            alert('Please answer this question');
-            return;
-        }
+    if(q.type === 'text'){
+        const val = document.getElementById('textInput').value.trim();
+        if(!val) return alert("Enter answer");
+        predictions[q.id] = val;
     }
 
-    if (currentQuestion < questions.length - 1) {
-        showQuestion(currentQuestion + 1);
+    if(!predictions[q.id]) return alert("Answer question");
+
+    if(currentQuestion < questions.length-1){
+        showQuestion(currentQuestion+1);
     } else {
         submitPredictions();
     }
 }
 
-function previousQuestion() {
-    if (currentQuestion > 0) {
-        showQuestion(currentQuestion - 1);
+function previousQuestion(){
+    if(currentQuestion>0){
+        showQuestion(currentQuestion-1);
     }
 }
 
-// =======================
-// SUBMIT
-// =======================
+// ================= SUBMIT =================
 
-async function submitPredictions() {
-    const submissionData = {
-        participantName: predictions.participantName,
-        timestamp: predictions.timestamp,
-        ...predictions
-    };
-
-    await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submissionData)
+async function submitPredictions(){
+    await fetch(GOOGLE_SCRIPT_URL,{
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(predictions)
     });
 
     document.getElementById('successName').textContent = predictions.participantName;
