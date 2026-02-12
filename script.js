@@ -69,7 +69,7 @@ const questions = [
    // Position predictions (Selected positions only)
 ...[
     1, 2, 3, 4, 5,
-    15, 16, 17, 18, 19, 20
+    16, 17, 18, 19, 20
 ].map(position => ({
     id: `p${position}`,
     title: `F1 2026 Season - YOUR P${position}`,
@@ -209,14 +209,14 @@ function renderQuestionNavigation() {
         let label = '';
         if (question.id.startsWith('p')) {
             label = `P${question.id.substring(1)}`;
-        } else if (question.id === 'pole_driver') {
-            label = 'POLE';
-        } else if (question.id === 'pole_time') {
-            label = 'P.TIME';
-        } else if (question.id === 'fastest_lap_driver') {
-            label = 'FAST';
-        } else if (question.id === 'fastest_lap_time') {
-            label = 'F.TIME';
+        } else if (question.id === 'Flop') {
+            label = 'Flop';
+        } else if (question.id === 'fucked') {
+            label = 'Fuck';
+        } else if (question.id === 'dnf') {
+            label = 'DNF';
+        } else if (question.id === 'good') {
+            label = 'Good';
         } else if (question.id === 'most_positions') {
             label = 'MOST';
         }
@@ -498,6 +498,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
