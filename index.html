@@ -71,15 +71,27 @@
                     <h2 class="question-title" id="questionTitle"></h2>
                     
                     <div class="drivers-grid" id="driversGrid"></div>
-                    <div class="time-input-container" id="timeInputContainer" style="display: none;">
-                        <div class="fixed-time-input">
-                            <span class="time-prefix">1:</span>
-                            <input type="text" id="timeInputSeconds" placeholder="12" maxlength="2" pattern="\d{2}">
-                            <span class="time-dot">.</span>
-                            <input type="text" id="timeInputMilliseconds" placeholder="246" maxlength="3" pattern="\d{3}">
-                        </div>
+                    <div class="drivers-grid" id="driversGrid"></div>
 
-                        <div class="text-input-container" id="textInputContainer" style="display: none;">
+<div class="time-input-container" id="timeInputContainer" style="display: none;">
+    <div class="fixed-time-input">
+        <span class="time-prefix">1:</span>
+        <input type="text" id="timeInputSeconds" placeholder="12" maxlength="2">
+        <span class="time-dot">.</span>
+        <input type="text" id="timeInputMilliseconds" placeholder="246" maxlength="3">
+    </div>
+</div>
+
+<div class="text-input-container" id="textInputContainer" style="display: none;">
+    <textarea 
+        id="textInput"
+        rows="4"
+        maxlength="300"
+        placeholder="Enter your answer..."
+        style="width: 100%; padding: 12px; border-radius: 10px; font-size: 16px;">
+    </textarea>
+</div>
+
     <textarea 
         id="textInput"
         rows="4"
@@ -118,6 +130,7 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
