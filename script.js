@@ -299,7 +299,28 @@ if (question.type === 'driver') {
 else if (question.type === 'time') {
     timeInputContainer.style.display = 'block';
 
+    const timeInputSeconds = document.getElementById('timeInputSeconds');
+    const timeInputMilliseconds = document.getElementById('timeInputMilliseconds');
+
+    const existingValue = predictions[question.id];
+    if (existingValue && existingValue.startsWith('1:')) {
+        const parts = existingValue.split(':');
+        if (parts.length === 2) {
+            const timeParts = parts[1].split('.');
+            timeInputSeconds.value = timeParts[0] || '';
+            timeInputMilliseconds.value = timeParts[1] || '';
+        }
+    } else {
+        timeInputSeconds.value = '';
+        timeInputMilliseconds.value = '';
+    }
+}
 else if (question.type === 'text') {
+    textInputContainer.style.display = 'block';
+    textInput.placeholder = question.placeholder || 'Enter your answer...';
+    textInput.value = predictions[question.id] || '';
+}
+
     textInputContainer.style.display = 'block';
     textInput.placeholder = question.placeholder || 'Enter your answer...';
     textInput.value = predictions[question.id] || '';
@@ -533,6 +554,7 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
 
 
 
