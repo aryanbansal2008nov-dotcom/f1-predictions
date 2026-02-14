@@ -64,22 +64,44 @@ const driverImages = {
     'VALTERRI BOTTAS': 'bottas.png'
 };
 
+// Constructors Data
+const constructors = [
+    { name: 'Red Bull Racing', color: '#3671C6', logo: 'redbull.png' },
+    { name: 'McLaren', color: '#FF8000', logo: 'mclaren.png' },
+    { name: 'Ferrari', color: '#E8002D', logo: 'ferrari.png' },
+    { name: 'Mercedes', color: '#27F4D2', logo: 'mercedes.png' },
+    { name: 'Aston Martin', color: '#229971', logo: 'astonmartin.png' },
+    { name: 'Alpine', color: '#FF87BC', logo: 'alpine.png' },
+    { name: 'Williams', color: '#64C4FF', logo: 'williams.png' },
+    { name: 'Racing Bulls', color: '#6692FF', logo: 'racingbulls.png' },
+    { name: 'Audi Racing', color: '#52E252', logo: 'audi.png' },
+    { name: 'Haas', color: '#B6BABD', logo: 'haas.png' },
+    { name: 'Cadillac Racing', color: '#000000', logo: 'cadillac.png' }
+];
+
 // Questions structure
 const questions = [
    // Position predictions (Selected positions only)
 ...[
     1, 2, 3, 4, 5,
-    16, 17, 18, 19, 20
+    18, 19, 20, 21, 22
 ].map(position => ({
     id: `p${position}`,
     title: `F1 2026 Season - YOUR P${position}`,
     type: 'driver'
 })),
+    // Constructor predictions
+    ...[1, 2, 3, 10, 11].map(position => ({
+        id: `constructor_p${position}`,
+        title: `F1 2026 Constructors Championship - P${position}`,
+        type: 'constructor'
+    })),
     // Special predictions
-    { id: 'Flop', title: 'F1 2026 Season - Flop Driver', type: 'driver', questionNumber: 'QUESTION 21 / 24' },
-    { id: 'good', title: 'F1 2026 Season - Better then expected', type: 'driver', questionNumber: 'QUESTION 22 / 24',},
+    { id: 'Flop', title: 'F1 2026 Season - Biggest Flop', type: 'driver', questionNumber: 'QUESTION 21 / 24' },
+    { id: 'good', title: 'F1 2026 Season - Biggest Surprise', type: 'driver', questionNumber: 'QUESTION 22 / 24',},
     { id: 'dnf', title: 'F1 2026 Season - Driver Crashing the most', type: 'driver', questionNumber: 'QUESTION 23 / 24' },
-    { id: 'fucked', title: 'F1 2026 Season - Driver getting booted mid season', type: 'driver', questionNumber: 'QUESTION 25 / 24' }
+    { id: 'fucked', title: 'F1 2026 Season - Driver getting booted mid season', type: 'driver', questionNumber: 'QUESTION 25 / 24' },
+    { id: 'crazy', title: 'F1 2026 Season - Crazy Prediction', type: 'text', questionNumber: 'QUESTION 26 / 24' }
 ];
 
 // Update questions count
@@ -100,7 +122,7 @@ function startPrediction() {
     const name = document.getElementById('participantName').value.trim();
     
     if (!name) {
-        alert('Please enter your name');
+        alert('Enter your name you fucking idiot');
         return;
     }
     
@@ -207,7 +229,9 @@ function renderQuestionNavigation() {
         
         // Determine label based on question type
         let label = '';
-        if (question.id.startsWith('p')) {
+        if (question.id.startsWith('constructor_p')) {
+            label = `C${question.id.replace('constructor_p', '')}`;
+        } else if (question.id.startsWith('p')) {
             label = `P${question.id.substring(1)}`;
         } else if (question.id === 'Flop') {
             label = 'Flop';
@@ -217,6 +241,8 @@ function renderQuestionNavigation() {
             label = 'DNF';
         } else if (question.id === 'good') {
             label = 'Good';
+        } else if (question.id === 'crazy') {
+            label = 'Crazy';
         } else if (question.id === 'most_positions') {
             label = 'MOST';
         }
@@ -276,14 +302,36 @@ function showQuestion(index) {
     // Show appropriate input type
     const driversGrid = document.getElementById('driversGrid');
     const timeInputContainer = document.getElementById('timeInputContainer');
+    const textInputContainer = document.getElementById('textInputContainer');
     
     if (question.type === 'driver') {
         driversGrid.style.display = 'grid';
         timeInputContainer.style.display = 'none';
+        if (textInputContainer) textInputContainer.style.display = 'none';
         renderDrivers(question.id);
+    } else if (question.type === 'constructor') {
+        driversGrid.style.display = 'grid';
+        timeInputContainer.style.display = 'none';
+        if (textInputContainer) textInputContainer.style.display = 'none';
+        renderConstructors(question.id);
+    } else if (question.type === 'text') {
+        driversGrid.style.display = 'none';
+        timeInputContainer.style.display = 'none';
+        if (textInputContainer) {
+            textInputContainer.style.display = 'block';
+            const textInput = document.getElementById('crazyPredictionInput');
+            textInput.value = predictions[question.id] || '';
+            
+            // Add event listener to save text as user types
+            textInput.oninput = () => {
+                predictions[question.id] = textInput.value;
+                updateQuestionNavigation();
+            };
+        }
     } else {
         driversGrid.style.display = 'none';
         timeInputContainer.style.display = 'block';
+        if (textInputContainer) textInputContainer.style.display = 'none';
         const timeInputSeconds = document.getElementById('timeInputSeconds');
         const timeInputMilliseconds = document.getElementById('timeInputMilliseconds');
         
@@ -358,6 +406,47 @@ function renderDrivers(questionId) {
     });
 }
 
+function renderConstructors(questionId) {
+    const driversGrid = document.getElementById('driversGrid');
+    driversGrid.innerHTML = '';
+    
+    // Get already selected constructors for this championship
+    const selectedConstructors = new Set();
+    questions.forEach(q => {
+        if (q.type === 'constructor' && predictions[q.id] && q.id !== questionId) {
+            selectedConstructors.add(predictions[q.id]);
+        }
+    });
+    
+    // Filter out already selected constructors
+    const availableConstructors = constructors.filter(constructor => 
+        !selectedConstructors.has(constructor.name) || predictions[questionId] === constructor.name
+    );
+    
+    availableConstructors.forEach(constructor => {
+        const card = document.createElement('div');
+        card.className = 'driver-card constructor-card';
+        
+        if (predictions[questionId] === constructor.name) {
+            card.classList.add('selected');
+        }
+        
+        card.innerHTML = `
+            <div class="constructor-info">
+                <img src="driver pics/${constructor.logo}" alt="${constructor.name}" class="constructor-logo">
+                <div class="constructor-name">${constructor.name}</div>
+            </div>
+        `;
+        
+        card.onclick = () => selectConstructor(questionId, constructor.name);
+        card.ondblclick = () => {
+            selectConstructor(questionId, constructor.name);
+            setTimeout(() => nextQuestion(), 100);
+        };
+        driversGrid.appendChild(card);
+    });
+}
+
 function selectDriver(questionId, driverName) {
     // Remove previous selection for this question from the set (only for position predictions)
     if (predictions[questionId] && questionId.startsWith('p') && questionId.match(/^p\d+$/)) {
@@ -377,8 +466,27 @@ function selectDriver(questionId, driverName) {
     updateQuestionNavigation();
 }
 
+function selectConstructor(questionId, constructorName) {
+    // Add new selection
+    predictions[questionId] = constructorName;
+    
+    // Re-render constructors to show selection
+    renderConstructors(questionId);
+    
+    // Update navigation bar to show completion
+    updateQuestionNavigation();
+}
+
 function allQuestionsAnswered() {
-    return questions.every(question => predictions[question.id]);
+    return questions.every(question => {
+        const answer = predictions[question.id];
+        if (!answer) return false;
+        // For text questions, check if the answer is not just whitespace
+        if (question.type === 'text') {
+            return answer.trim().length > 0;
+        }
+        return true;
+    });
 }
 
 function nextQuestion() {
@@ -387,19 +495,32 @@ function nextQuestion() {
     // Validate current question
     if (question.type === 'driver') {
         if (!predictions[question.id]) {
-            alert('Please select a driver');
+            alert('nigga select a driver before moving on');
             return;
         }
+    } else if (question.type === 'constructor') {
+        if (!predictions[question.id]) {
+            alert('Please select a constructor');
+            return;
+        }
+    } else if (question.type === 'text') {
+        const textInput = document.getElementById('crazyPredictionInput').value.trim();
+        if (!textInput) {
+            alert('Enter your crazy prediction you fucking donkey');
+            return;
+        }
+        predictions[question.id] = textInput;
+        updateQuestionNavigation();
     } else {
         const timeInputSeconds = document.getElementById('timeInputSeconds').value.trim();
         const timeInputMilliseconds = document.getElementById('timeInputMilliseconds').value.trim();
         
         if (!timeInputSeconds || !timeInputMilliseconds) {
-            alert('Please enter both seconds and milliseconds');
+            alert('dont be a retard');
             return;
         }
         if (!validateTime(timeInputSeconds + '.' + timeInputMilliseconds)) {
-            alert('Please enter valid time (seconds: 00-59, milliseconds: 000-999)');
+            alert('valid time stupid imbecile (seconds: 00-59, milliseconds: 000-999)');
             return;
         }
         predictions[question.id] = '1:' + timeInputSeconds + '.' + timeInputMilliseconds;
@@ -412,7 +533,7 @@ function nextQuestion() {
     } else {
         // Check if all questions are answered before submitting
         if (!allQuestionsAnswered()) {
-            alert('Get yo ass back here and submit all questions before leaving nigga');
+            alert('Get yo ass back here and submit all questions before leaving stupid nigga');
             return;
         }
         submitPredictions();
@@ -462,7 +583,7 @@ async function submitPredictions() {
         
     } catch (error) {
         console.error('Error submitting predictions:', error);
-        alert('Error submitting predictions. Please try again.');
+        alert('Theres something wrong niggs. stfu try again.');
         
         // Restore button
         const nextBtn = document.getElementById('nextBtn');

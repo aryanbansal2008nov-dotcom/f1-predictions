@@ -650,6 +650,46 @@ html {
     line-height: 1.2;
 }
 
+/* Constructor Cards */
+.constructor-card {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: auto;
+}
+
+.constructor-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.constructor-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.constructor-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--f1-light);
+    text-transform: uppercase;
+    line-height: 1.3;
+    text-align: center;
+    width: 100%;
+}
+
+.constructor-card:hover .constructor-logo {
+    filter: drop-shadow(0 6px 12px rgba(225, 6, 0, 0.5));
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
 /* Time Input */
 .time-input-container {
     max-width: 400px;
@@ -719,6 +759,38 @@ html {
 .fixed-time-input input::placeholder {
     color: rgba(255, 255, 255, 0.2);
     font-weight: 700;
+}
+
+/* Text Input Container */
+.text-input-container {
+    max-width: 800px;
+    margin: 30px auto;
+}
+
+.text-input-container textarea {
+    width: 100%;
+    min-height: 200px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(225, 6, 0, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--f1-light);
+    resize: vertical;
+    outline: none;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    line-height: 1.6;
+}
+
+.text-input-container textarea::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.text-input-container textarea:focus {
+    border-color: var(--f1-red);
+    box-shadow: 0 10px 40px rgba(225, 6, 0, 0.3), inset 0 0 20px rgba(225, 6, 0, 0.1);
 }
 
 /* Navigation Buttons */
